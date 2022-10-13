@@ -28,8 +28,8 @@ resource "google_compute_instance_template" "web_server" {
   }
 
   service_account {
-    email = google_service_account.instance_service_account.email
-    scopes = [ "compute-ro" ]
+    email  = google_service_account.instance_service_account.email
+    scopes = ["compute-ro"]
   }
 
   metadata = {

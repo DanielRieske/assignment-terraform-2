@@ -1,0 +1,42 @@
+name: Assignment Terraform - Infrastructure Test Pipeline
+
+on: 
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: Trigger Google Cloud Build
+    environment: Development #Has to change to different service and provider ID profiles
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0.4.0'
+      with:
+        token_format: 'access_token'
+        workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+        service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        access_token_lifetime: '120s'
+
+    - name: Set up Cloud SDK
+      uses: 'google-github-actions/setup-gcloud@v0.3.0'
+
+    - name: Setup Terraform
+      uses: 'hashicorp/setup-terraform@v1'
+
+    - name: Initialize Terraform
+      run: terraform init
+
+    - name: Check Terraform files for formatting errors
+      run: terraform fmt -check
+
+    - name: Apply Terraform changes
+      run: terraform apply -var-file=config/test.tfvars

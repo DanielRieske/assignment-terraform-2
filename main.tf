@@ -6,9 +6,10 @@ terraform {
     }
   }
 
-  #   backend "gcs" {
-  #     bucket = "assignment-terraform-state"
-  #   }
+  backend "gcs" {
+    bucket = "terraform-state-assignment-lb"
+    prefix = "terraform/state"
+  }
 }
 
 provider "google" {
@@ -20,10 +21,10 @@ provider "google-beta" {
 }
 
 provider "random" {
-  
+
 }
 
 locals {
-  project = "assignment-terraform"
+  project         = "assignment-terraform"
   resource_prefix = "${local.project}-${var.environment}"
 }

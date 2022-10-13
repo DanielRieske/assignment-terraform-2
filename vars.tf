@@ -14,7 +14,7 @@ variable "deploy_regions" {
 }
 
 variable "instance_tags" {
-  type = list(string)
+  type        = list(string)
   description = "Tags to set on the compute instances"
 }
 
@@ -24,14 +24,14 @@ variable "machine_type" {
 }
 
 variable "instance_count" {
-  type = number
+  type        = number
   description = "Amount of instances in a single managed instance group"
 }
 
 variable "subnet_configurations" {
   type = set(object({
-    region: string
-    ip_cidr_range: string
+    region : string
+    ip_cidr_range : string
   }))
   description = "Configuration of subnets per region"
 }

@@ -13,7 +13,7 @@ permissions:
 jobs:
   build:
     name: Trigger Google Cloud Build
-    environment: Development #Has to change to different service and provider ID profiles
+    environment: production
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -34,9 +34,6 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-
-    - name: Check Terraform files for formatting errors
-      run: terraform fmt -check
 
     - name: Apply Terraform changes
       run: terraform apply -var-file=config/prod.tfvars

@@ -1,5 +1,6 @@
 resource "google_compute_health_check" "autohealing" {
   name                = "${local.resource_prefix}-autohealing-health-check"
+  description         = "Autohealing http health check for the managed instance group"
   check_interval_sec  = 10
   timeout_sec         = 5
   healthy_threshold   = 1
@@ -7,12 +8,13 @@ resource "google_compute_health_check" "autohealing" {
 
   http_health_check {
     request_path = "/"
-    port = "80"
+    port         = "80"
   }
 }
 
 resource "google_compute_region_instance_group_manager" "web_server_instance_group" {
-  for_each = var.deploy_regions
+  for_each    = var.deploy_regions
+  description = "Managed instance group in a region distributed over multiple zones"
 
   name                      = "${local.resource_prefix}-${each.key}-${random_id.instance_template_suffix.hex}"
   region                    = each.key   # Region
@@ -43,6 +45,7 @@ resource "google_compute_region_instance_group_manager" "web_server_instance_gro
 
 resource "google_compute_firewall" "allow_health_check" {
   name          = "${local.resource_prefix}-health-check-firewall"
+  description   = "Firewall to allow health checks on the MIG instances"
   provider      = google-beta
   direction     = "INGRESS"
   network       = google_compute_network.vpc_network.id
@@ -50,7 +53,7 @@ resource "google_compute_firewall" "allow_health_check" {
 
   allow {
     protocol = "tcp"
-    ports = ["80"]
+    ports    = ["80"]
   }
 
   target_tags = ["allow-health-check"]

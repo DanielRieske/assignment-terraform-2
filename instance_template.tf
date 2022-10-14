@@ -44,14 +44,15 @@ resource "google_service_account" "instance_service_account" {
   project      = var.project_id
   account_id   = "${local.resource_prefix}-mig"
   display_name = "Service Account used for the managed instance groups"
+  description  = "Service account attached to the MIG instances"
 }
 
 resource "google_project_iam_binding" "mig_roles" {
   for_each = toset([
     "roles/iam.serviceAccountUser"
   ])
-  role     = each.key
-  members  = [
+  role = each.key
+  members = [
     "serviceAccount:${google_service_account.instance_service_account.email}"
   ]
   project = var.project_id

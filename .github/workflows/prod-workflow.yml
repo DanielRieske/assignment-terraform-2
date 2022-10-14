@@ -35,5 +35,8 @@ jobs:
     - name: Initialize Terraform
       run: terraform init
 
+    - name: Select Terraform workspace
+      run: terraform workspace select prod
+
     - name: Apply Terraform changes
       run: terraform apply -var-file=config/prod.tfvars

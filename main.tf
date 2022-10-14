@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "terraform-state-assignment-lb"
+    bucket = "terraform-state-assignment-lb-daan"
     prefix = "terraform/state"
   }
 }

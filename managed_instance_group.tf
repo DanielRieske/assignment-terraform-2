@@ -6,7 +6,8 @@ resource "google_compute_health_check" "autohealing" {
   unhealthy_threshold = 3
 
   http_health_check {
-    port_specification = "USE_SERVING_PORT"
+    request_path = "/"
+    port = "80"
   }
 }
 
@@ -26,7 +27,7 @@ resource "google_compute_region_instance_group_manager" "web_server_instance_gro
 
   named_port {
     name = "http"
-    port = 8080
+    port = 80
   }
 
   auto_healing_policies {
@@ -44,10 +45,13 @@ resource "google_compute_firewall" "allow_health_check" {
   name          = "${local.resource_prefix}-health-check-firewall"
   provider      = google-beta
   direction     = "INGRESS"
-  network       = "default"
+  network       = google_compute_network.vpc_network.id
   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+
   allow {
     protocol = "tcp"
+    ports = ["80"]
   }
+
   target_tags = ["allow-health-check"]
 }

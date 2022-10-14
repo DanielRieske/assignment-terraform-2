@@ -46,7 +46,7 @@ resource "google_service_account" "instance_service_account" {
   display_name = "Service Account used for the managed instance groups"
 }
 
-resource "google_project_iam_member" "mig_roles" {
+resource "google_project_iam_binding" "mig_roles" {
   for_each = toset([
     "roles/iam.serviceAccountUser"
   ])

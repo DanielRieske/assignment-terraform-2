@@ -13,8 +13,8 @@ resource "google_cloud_run_service" "cloud_run" {
 }
 
 resource "google_cloud_run_service_iam_member" "google_cloud_run_member" {
-    count = length(google_cloud_run_service.cloud_run)
-    service = google_cloud_run_service.cloud_run[count.index].name
+    for_each = var.deploy_regions
+    service = google_cloud_run_service.cloud_run[each.key].name
     role = "roles/run.invoker"
     member = "allUsers"
 }

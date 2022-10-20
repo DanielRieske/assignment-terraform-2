@@ -1,9 +1,6 @@
 name: Assignment Terraform - Infrastructure Test Pipeline
 
 on: 
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read

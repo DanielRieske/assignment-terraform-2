@@ -5,11 +5,6 @@ terraform {
       version = "4.40.0"
     }
   }
-
-  backend "gcs" {
-    bucket = "terraform-state-assignment-lb-daan"
-    prefix = "terraform/state"
-  }
 }
 
 provider "google" {
@@ -25,6 +20,6 @@ provider "random" {
 }
 
 locals {
-  project         = "assignment-terraform"
+  project         = "assignment-terraform-2"
   resource_prefix = "${local.project}-${var.environment}"
 }

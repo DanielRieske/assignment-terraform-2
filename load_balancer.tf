@@ -33,7 +33,7 @@ resource "google_compute_backend_service" "backend_service" {
   dynamic "backend" {
     for_each = google_cloud_run_service.cloud_run
     content {
-      group = backend.value.id
+      group = backend.value.name
     }
   }
 }

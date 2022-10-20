@@ -28,7 +28,6 @@ resource "google_compute_backend_service" "backend_service" {
   description = "Backend service containing the Cloud Run Endpoint Group"
   protocol    = "HTTP"
   port_name   = "http"
-  timeout_sec = 10
 
   dynamic "backend" {
     for_each = google_compute_region_network_endpoint_group.cloud_run_endpoint_group

@@ -5,6 +5,11 @@ terraform {
       version = "4.40.0"
     }
   }
+
+  backend "gcs" {
+    bucket = "terraform-state-assignment-lb-2"
+    prefix = "terraform/state"
+  }
 }
 
 provider "google" {

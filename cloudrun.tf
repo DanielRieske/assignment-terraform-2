@@ -14,7 +14,7 @@ resource "google_cloud_run_service" "cloud_run" {
 
 resource "google_cloud_run_service_iam_member" "google_cloud_run_member" {
     for_each = google_cloud_run_service.cloud_run
-    service = each.value.self_link
+    service = google_cloud_run_service.cloud_run[each.key].name
     role = "roles/run.invoker"
     member = "allUsers"
 }

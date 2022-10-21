@@ -24,10 +24,12 @@ resource "google_compute_region_network_endpoint_group" "cloud_run_endpoint_grou
 }
 
 resource "google_compute_backend_service" "backend_service" {
-  name        = "${local.resource_prefix}-backend-service"
+  name = "${local.resource_prefix}-backend-service"
   description = "Backend service containing the Cloud Run Endpoint Group"
-  protocol    = "HTTP"
-  port_name   = "http"
+  protocol = "HTTP"
+  port_name = "http"
+
+  enable_cdn = true
 
   dynamic "backend" {
     for_each = google_compute_region_network_endpoint_group.cloud_run_endpoint_group
@@ -62,15 +64,37 @@ resource "google_compute_url_map" "url_map" {
 }
 
 
+resource "google_compute_url_map" "http-redirect" {
+  name = "http-redirect"
+
+  default_url_redirect {
+    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"  // 301 redirect
+    strip_query            = false
+    https_redirect         = true
+  }
+}
+
+resource "google_compute_target_http_proxy" "http-redirect" {
+  name    = "http-redirect"
+  url_map = google_compute_url_map.http-redirect.self_link
+}
+
+resource "google_compute_global_forwarding_rule" "http-redirect" {
+  name       = "http-redirect"
+  target     = google_compute_target_http_proxy.http-redirect.self_link
+  ip_address = google_compute_global_address.global-address.id
+  port_range = "80"
+}
+
 resource "google_dns_managed_zone" "dns_zone" {
   name     = "${local.resource_prefix}-dns-zone"
   dns_name = "${var.domain}."
 }
 
-resource "google_dns_record_set" "dns_record" {
+resource "google_dns_record_set" "record_main" {
   managed_zone = google_dns_managed_zone.dns_zone.name
 
-  name    = "www.${var.domain}."
+  name    = "${google_dns_managed_zone.dns_zone.dns_name}"
   type    = "A"
   rrdatas = [google_compute_global_address.global-address.address]
   ttl     = 300

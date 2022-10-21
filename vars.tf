@@ -3,6 +3,11 @@ variable "project_id" {
   description = "The project id of the GCP cloud"
 }
 
+variable "peer_project_id" {
+  type        = string
+  description = "The project id of the peer project the GCP cloud"
+}
+
 variable "environment" {
   type        = string
   description = "The environment where we deploy the application to"

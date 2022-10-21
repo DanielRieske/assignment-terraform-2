@@ -25,6 +25,6 @@ provider "random" {
 }
 
 locals {
-  project         = "assignment-terraform-2"
+  project = "assignment-terraform-2"
   resource_prefix = "${local.project}-${var.environment}"
 }

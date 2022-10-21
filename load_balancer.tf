@@ -62,13 +62,13 @@ resource "google_compute_url_map" "url_map" {
 }
 
 
-resource "google_dns_managed_zone" "example" {
+resource "google_dns_managed_zone" "dns_zone" {
   name     = "${local.resource_prefix}-dns-zone"
   dns_name = var.domain
 }
 
-resource "google_dns_record_set" "example" {
-  managed_zone = google_compute_managed_ssl_certificate.ssl-certificate.managed
+resource "google_dns_record_set" "dns_record" {
+  managed_zone = google_dns_managed_zone.dns_zone.name
 
   name    = "www.${var.domain}"
   type    = "A"

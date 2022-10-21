@@ -4,7 +4,7 @@ project_id = "playground-daniel-fd08"
 
 deploy_regions = {
     europe-west4 = ["europe-west4-a", "europe-west4-b", "europe-west4-c"],
-    us-central1  = ["us-central1-a", "us-central1-b", "us-central1-c"] 
+    europe-west1  = ["europe-west1-a", "europe-west1-b", "europe-west1-c"] 
 }
 
 subnet_configurations = [

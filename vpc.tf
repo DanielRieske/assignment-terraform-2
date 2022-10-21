@@ -13,8 +13,8 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   ip_cidr_range = each.value.ip_cidr_range
 }
 
-resource "google_compute_network_peering" "main_network" {
-  name         = "${local.resource_prefix}-main-peer"
-  network      = google_compute_network.vpc_network.self_link
-  peer_network = "projects/${var.peer_project_id}/global/networks/${var.peer_network_id}"
-}
+#resource "google_compute_network_peering" "main_network" {
+#  name         = "${local.resource_prefix}-main-peer"
+#  network      = google_compute_network.vpc_network.self_link
+#  peer_network = "projects/${var.peer_project_id}/global/networks/${var.peer_network_id}"
+#}

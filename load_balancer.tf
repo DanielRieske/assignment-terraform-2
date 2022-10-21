@@ -64,13 +64,13 @@ resource "google_compute_url_map" "url_map" {
 
 resource "google_dns_managed_zone" "dns_zone" {
   name     = "${local.resource_prefix}-dns-zone"
-  dns_name = var.domain
+  dns_name = "${var.domain}."
 }
 
 resource "google_dns_record_set" "dns_record" {
   managed_zone = google_dns_managed_zone.dns_zone.name
 
-  name    = "www.${var.domain}"
+  name    = "www.${var.domain}."
   type    = "A"
   rrdatas = [google_compute_global_address.global-address.id]
   ttl     = 300

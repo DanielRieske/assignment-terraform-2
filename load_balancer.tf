@@ -14,7 +14,7 @@ resource "google_compute_managed_ssl_certificate" "ssl-certificate" {
 
 resource "google_compute_region_network_endpoint_group" "cloud_run_endpoint_group" {
   for_each = var.deploy_regions
-  name = "${local.resource_prefix}-endpoint-group"
+  name = "${local.resource_prefix}-${each.key}-endpoint-group"
   network_endpoint_type = "SERVERLESS"
   region = each.key
 

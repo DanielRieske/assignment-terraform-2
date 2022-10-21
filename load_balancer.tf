@@ -38,7 +38,7 @@ resource "google_compute_backend_service" "backend_service" {
 }
 
 resource "google_compute_global_forwarding_rule" "forwarding-rule" {
-  name = "${local.resource_prefix}-forwarding-rule-port-8080"
+  name = "${local.resource_prefix}-forwarding-rule-port-443"
   description = "Global external load balancer"
   ip_address = google_compute_global_address.global-address.id
   port_range = "443"
@@ -59,4 +59,19 @@ resource "google_compute_url_map" "url_map" {
   name            = "${local.resource_prefix}-url-map"
   description     = "Url mapping to the backend services"
   default_service = google_compute_backend_service.backend_service.self_link
+}
+
+
+resource "google_dns_managed_zone" "example" {
+  name     = "${local.resource_prefix}-dns-zone"
+  dns_name = var.domain
+}
+
+resource "google_dns_record_set" "example" {
+  managed_zone = google_compute_managed_ssl_certificate.ssl-certificate.managed
+
+  name    = "www.${var.domain}"
+  type    = "A"
+  rrdatas = [google_compute_global_address.global-address.id]
+  ttl     = 300
 }

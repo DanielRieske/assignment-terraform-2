@@ -72,6 +72,6 @@ resource "google_dns_record_set" "dns_record" {
 
   name    = "www.${var.domain}."
   type    = "A"
-  rrdatas = [google_compute_global_address.global-address.id]
+  rrdatas = [google_compute_global_address.global-address.address]
   ttl     = 300
 }
